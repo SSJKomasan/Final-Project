@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadata and Title -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flag Guessing Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Game Container -->
+    <div id="game-container">
+        <h1>Flag Guessing Game</h1>
+        
+        <!-- Flag Display -->
+        <div id="flag-container">
+            <img id="flag" src="" alt="Country Flag">
+        </div>
+        
+        <!-- Answer Buttons -->
+        <div id="answer-buttons" class="btn-container">
+            <button class="btn" onclick="checkAnswer(this)"></button>
+            <button class="btn" onclick="checkAnswer(this)"></button>
+            <button class="btn" onclick="checkAnswer(this)"></button>
+            <button class="btn" onclick="checkAnswer(this)"></button>
+        </div>
+        
+        <!-- Next Button -->
+        <button id="next-btn" onclick="nextFlag()">Next</button>
+    </div>
+
+    <!-- JavaScript Functionality -->
+    <script>
+        const flags = [
+            { src: 'https://upload.wikimedia.org/wikipedia/commons/0/0a/Flag_of_Jamaica.svg', name: 'Jamaica' },
+            { src: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Grenada.svg', name: 'Grenada' },
+            { src: 'https://upload.wikimedia.org/wikipedia/en/b/ba/Flag_of_Germany.svg', name: 'Germany' },
+            { src: 'https://upload.wikimedia.org/wikipedia/commons/c/c4/Flag_of_Dominica.svg', name: 'Dominica' }
+        ];
+
+        let currentFlagIndex = 0;
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function nextFlag() {
+            currentFlagIndex = (currentFlagIndex + 1) % flags.length;
+            loadFlag();
+        }
+
+        function loadFlag() {
+            const flagData = flags[currentFlagIndex];
+            document.getElementById('flag').src = flagData.src;
+
+            let options = shuffle([...flags]);
+            let buttons = document.querySelectorAll('.btn');
+            buttons.forEach((button, index) => {
+                button.textContent = options[index].name;
+                button.dataset.correct = options[index].name === flagData.name;
+            });
+        }
+
+        function checkAnswer(button) {
+            if (button.dataset.correct === 'true') {
+                alert('Correct!');
+            } else {
+                alert('Wrong! Try Again.');
+            }
+        }
+
+        loadFlag();
+    </script>
+</body>
+</html>
